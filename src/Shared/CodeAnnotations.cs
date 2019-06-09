@@ -34,9 +34,9 @@ namespace JetBrains.Annotations
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     internal sealed class ContractAnnotationAttribute : Attribute
     {
-        public string Contract { get; private set; }
+        public string Contract { get; }
 
-        public bool ForceFullStates { get; private set; }
+        public bool ForceFullStates { get; }
 
         public ContractAnnotationAttribute([NotNull] string contract)
             : this(contract, false)
@@ -75,8 +75,18 @@ namespace JetBrains.Annotations
             TargetFlags = targetFlags;
         }
 
-        public ImplicitUseKindFlags UseKindFlags { get; private set; }
-        public ImplicitUseTargetFlags TargetFlags { get; private set; }
+        public ImplicitUseKindFlags UseKindFlags { get; }
+        public ImplicitUseTargetFlags TargetFlags { get; }
+    }
+
+    [AttributeUsage(AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Delegate)]
+    internal sealed class StringFormatMethodAttribute : Attribute
+    {
+        public StringFormatMethodAttribute([NotNull] string formatParameterName)
+            => FormatParameterName = formatParameterName;
+
+        [NotNull]
+        public string FormatParameterName { get; }
     }
 
     [Flags]
@@ -96,12 +106,5 @@ namespace JetBrains.Annotations
         Itself = 1,
         Members = 2,
         WithMembers = Itself | Members
-    }
-}
-
-namespace Microsoft.Data.Entity.Relational.Utilities
-{
-    internal sealed class ValidatedNotNullAttribute : Attribute
-    {
     }
 }
